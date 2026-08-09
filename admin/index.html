@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>پنل ادمین</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container { width: 100%; max-width: 900px; }
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #f1f5f9;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-title i { font-size: 28px; color: #f87171; }
+        .header-title h1 {
+            font-size: 24px;
+            background: linear-gradient(135deg, #f87171, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .badge {
+            background: rgba(239,68,68,0.15);
+            color: #f87171;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            border: 1px solid rgba(239,68,68,0.15);
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            color: #0f172a;
+        }
+        .btn-danger {
+            background: rgba(239,68,68,0.15);
+            color: #f87171;
+            border: 1px solid rgba(239,68,68,0.15);
+        }
+        .btn-danger:hover { background: rgba(239,68,68,0.25); }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: #0f172a;
+        }
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+        .btn-block { width: 100%; justify-content: center; }
+        .logout-btn {
+            background: rgba(239,68,68,0.15);
+            color: #f87171;
+            border: 1px solid rgba(239,68,68,0.15);
+            padding: 8px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover { background: rgba(239,68,68,0.25); }
+        input, textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            color: #f1f5f9;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #f87171;
+            background: rgba(239,68,68,0.06);
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255,255,255,0.25);
+        }
+        textarea { min-height: 80px; resize: vertical; }
+        .login-box {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .login-box h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .login-box .sub {
+            color: rgba(255,255,255,0.3);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        .login-box .input-group {
+            position: relative;
+            margin: 15px 0;
+        }
+        .login-box .input-group i {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.3);
+        }
+        .login-box .input-group input {
+            padding-right: 48px;
+        }
+        .login-box .login-error {
+            color: #f87171;
+            font-size: 14px;
+            margin-top: 12px;
+            min-height: 24px;
+        }
+        .ticket-list { display: flex; flex-direction: column; gap: 14px; }
+        .ticket-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        .ticket-item:hover { background: rgba(255,255,255,0.06); }
+        .ticket-item .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .ticket-item .ticket-title { font-size: 17px; font-weight: 600; }
+        .ticket-item .ticket-user {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+        }
+        .ticket-item .ticket-user i { margin-left: 5px; }
+        .ticket-item .ticket-desc {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+        .ticket-item .ticket-answer {
+            background: rgba(56,189,248,0.06);
+            border-right: 3px solid #38bdf8;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin: 10px 0;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+        .ticket-item .ticket-answer strong { color: #38bdf8; }
+        .ticket-item .ticket-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .ticket-item .ticket-status {
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .ticket-status.open {
+            background: rgba(16,185,129,0.15);
+            color: #34d399;
+        }
+        .ticket-status.closed {
+            background: rgba(239,68,68,0.15);
+            color: #f87171;
+        }
+        .ticket-item .ticket-date {
+            font-size: 12px;
+            color: rgba(255,255,255,0.25);
+        }
+        .ticket-item .ticket-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .ticket-item .answer-form {
+            display: none;
+            margin-top: 12px;
+            gap: 10px;
+            flex-direction: column;
+        }
+        .ticket-item .answer-form.active { display: flex; }
+        .ticket-item .answer-form textarea { min-height: 60px; }
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: rgba(255,255,255,0.2);
+        }
+        .empty-state i { font-size: 48px; margin-bottom: 12px; display: block; }
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-group .btn { opacity: 0.5; }
+        .filter-group .btn.active { opacity: 1; }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+            color: rgba(255,255,255,0.2);
+        }
+        .back-link a {
+            color: rgba(255,255,255,0.3);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .back-link a:hover { color: #38bdf8; }
+        @media (max-width: 640px) {
+            .card { padding: 20px 16px; }
+            .header { flex-direction: column; text-align: center; }
+            .header-title { justify-content: center; }
+            .ticket-item .ticket-header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- ========== صفحه لاگین ========== -->
+            <div id="loginPage">
+                <div class="login-box">
+                    <div style="font-size:48px;margin-bottom:10px;">
+                        <i class="fas fa-user-shield" style="color:#f87171;"></i>
+                    </div>
+                    <h2>🔐 پنل ادمین</h2>
+                    <p class="sub">برای دسترسی به پنل مدیریت</p>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="adminPassword" placeholder="رمز ادمین را وارد کنید" />
+                    </div>
+                    <button class="btn btn-primary btn-block" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> ورود
+                    </button>
+                    <div class="login-error" id="loginError"></div>
+                    <div style="margin-top:15px;font-size:12px;color:rgba(255,255,255,0.15);">
+                        <i class="fas fa-info-circle"></i> رمز: 123456789
+                    </div>
+                    <div class="back-link">
+                        <i class="fas fa-arrow-right"></i>
+                        <a href="../user/index.html">بازگشت به صفحه ثبت تیکت</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== صفحه داشبورد ========== -->
+            <div id="dashboardPage" style="display:none;">
+                <div class="header">
+                    <div class="header-title">
+                        <i class="fas fa-user-shield"></i>
+                        <h1>پنل ادمین</h1>
+                    </div>
+                    <div>
+                        <span class="badge" id="ticketCount">0 تیکت</span>
+                        <button class="logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> خروج
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <button class="btn btn-sm btn-primary active" id="filterAll">همه</button>
+                    <button class="btn btn-sm" id="filterOpen" style="background:rgba(16,185,129,0.15);color:#34d399;">باز</button>
+                    <button class="btn btn-sm" id="filterClosed" style="background:rgba(239,68,68,0.15);color:#f87171;">بسته</button>
+                </div>
+
+                <div id="ticketList" class="ticket-list"></div>
+
+                <div class="back-link">
+                    <i class="fas fa-arrow-right"></i>
+                    <a href="../user/index.html">بازگشت به صفحه ثبت تیکت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
