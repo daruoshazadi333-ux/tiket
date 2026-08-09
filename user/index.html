@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ثبت تیکت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container { width: 100%; max-width: 800px; }
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #f1f5f9;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-title i { font-size: 28px; color: #38bdf8; }
+        .header-title h1 {
+            font-size: 24px;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .badge {
+            background: rgba(56,189,248,0.15);
+            color: #38bdf8;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            border: 1px solid rgba(56,189,248,0.15);
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: #0f172a;
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16,185,129,0.25);
+        }
+        .btn-block { width: 100%; justify-content: center; }
+        input, textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            color: #f1f5f9;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #38bdf8;
+            background: rgba(56,189,248,0.06);
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255,255,255,0.25);
+        }
+        textarea { min-height: 100px; resize: vertical; }
+        .ticket-form {
+            background: rgba(255,255,255,0.03);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .ticket-form h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: rgba(255,255,255,0.7);
+        }
+        .ticket-form h3 i { color: #38bdf8; margin-left: 10px; }
+        .form-group { display: flex; flex-direction: column; gap: 12px; }
+        .ticket-list { display: flex; flex-direction: column; gap: 14px; }
+        .ticket-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .ticket-item .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .ticket-item .ticket-title { font-size: 17px; font-weight: 600; }
+        .ticket-item .ticket-user {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+        }
+        .ticket-item .ticket-user i { margin-left: 5px; }
+        .ticket-item .ticket-desc {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+        .ticket-item .ticket-answer {
+            background: rgba(56,189,248,0.06);
+            border-right: 3px solid #38bdf8;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin: 10px 0;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+        .ticket-item .ticket-answer strong { color: #38bdf8; }
+        .ticket-item .ticket-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .ticket-item .ticket-status {
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .ticket-status.open {
+            background: rgba(16,185,129,0.15);
+            color: #34d399;
+        }
+        .ticket-status.closed {
+            background: rgba(239,68,68,0.15);
+            color: #f87171;
+        }
+        .ticket-item .ticket-date {
+            font-size: 12px;
+            color: rgba(255,255,255,0.25);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: rgba(255,255,255,0.2);
+        }
+        .empty-state i { font-size: 48px; margin-bottom: 12px; display: block; }
+        @media (max-width: 640px) {
+            .card { padding: 20px 16px; }
+            .header { flex-direction: column; text-align: center; }
+            .header-title { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div class="header-title">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h1>ثبت تیکت</h1>
+                </div>
+                <span class="badge" id="ticketCount">0 تیکت</span>
+            </div>
+
+            <div class="ticket-form">
+                <h3><i class="fas fa-pen"></i> تیکت جدید</h3>
+                <div class="form-group">
+                    <input type="text" id="userName" placeholder="نام شما (اختیاری)" />
+                    <input type="text" id="ticketSubject" placeholder="موضوع تیکت" />
+                    <textarea id="ticketMessage" placeholder="متن تیکت ..."></textarea>
+                    <button class="btn btn-success btn-block" id="submitTicketBtn">
+                        <i class="fas fa-paper-plane"></i> ارسال تیکت
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="font-size:16px;font-weight:600;margin-bottom:18px;color:rgba(255,255,255,0.7);">
+                    <i class="fas fa-list" style="color:#818cf8;margin-left:10px;"></i>
+                    تیکت‌های شما
+                </h3>
+                <div id="ticketList" class="ticket-list"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
